@@ -11,7 +11,7 @@ using YuckQi.Domain.Validation;
 
 namespace YuckQi.Application.Core
 {
-    internal class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TypeEntityBase<TKey>, TKey>, Result<Page<TypeEntityBase<TKey>, TKey>>> where TKey : struct
+    internal class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TypeEntityBase<TKey>, TKey>, Result<Page<TypeEntityBase<TKey>>>> where TKey : struct
     {
         #region Private Members
 
@@ -32,7 +32,7 @@ namespace YuckQi.Application.Core
 
         #region Public Methods
 
-        public Task<Result<Page<TypeEntityBase<TKey>, TKey>>> Handle(TypeSearchQuery<TypeEntityBase<TKey>, TKey> request, CancellationToken cancellationToken)
+        public Task<Result<Page<TypeEntityBase<TKey>>>> Handle(TypeSearchQuery<TypeEntityBase<TKey>, TKey> request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
