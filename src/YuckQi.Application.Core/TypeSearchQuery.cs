@@ -1,22 +1,25 @@
-﻿using YuckQi.Application.Core.Abstract;
+﻿using System;
+using YuckQi.Application.Core.Abstract;
 using YuckQi.Domain.Entities.Types.Abstract;
 
 namespace YuckQi.Application.Core
 {
-    public class TypeSearchQuery<TEntity, TKey> : SearchQueryBase<TEntity, TKey> where TEntity : TypeEntityBase<TKey> where TKey : struct
+    public class TypeSearchQuery<TKey> : SearchQueryBase<ITypeEntity<TKey>, TKey> where TKey : struct
     {
         #region Properties
 
-        public string Code { get; set; }
-        public string Name { get; set; }
+        public Guid? Identifier { get; }
+        public string Name { get; }
 
         #endregion
 
 
         #region Constructors
 
-        public TypeSearchQuery(int number, int size) : base(number, size)
+        public TypeSearchQuery(Guid? identifier, string name, int number, int size) : base(number, size)
         {
+            Identifier = identifier;
+            Name = name;
         }
 
         #endregion

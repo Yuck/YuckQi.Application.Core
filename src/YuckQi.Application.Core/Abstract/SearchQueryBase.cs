@@ -9,7 +9,7 @@ namespace YuckQi.Application.Core.Abstract
     {
         #region Properties
 
-        protected Page PageCriteria { get; }
+        public Page PageCriteria { get; }
 
         #endregion
 

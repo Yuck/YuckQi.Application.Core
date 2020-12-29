@@ -11,18 +11,18 @@ using YuckQi.Domain.ValueObjects;
 
 namespace YuckQi.Application.Core
 {
-    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TypeEntityBase<TKey>, TKey>, Result<Page<TypeEntityBase<TKey>>>> where TKey : struct
+    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TKey>, Result<Page<ITypeEntity<TKey>>>> where TKey : struct
     {
         #region Private Members
 
-        private readonly ITypeEntityService<TypeEntityBase<TKey>, TKey> _types;
+        private readonly ITypeEntityService<ITypeEntity<TKey>, TKey> _types;
 
         #endregion
 
 
         #region Constructors
 
-        public TypeSearchQueryHandler(ITypeEntityService<TypeEntityBase<TKey>, TKey> types)
+        public TypeSearchQueryHandler(ITypeEntityService<ITypeEntity<TKey>, TKey> types)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
         }
@@ -32,7 +32,7 @@ namespace YuckQi.Application.Core
 
         #region Public Methods
 
-        public Task<Result<Page<TypeEntityBase<TKey>>>> Handle(TypeSearchQuery<TypeEntityBase<TKey>, TKey> request, CancellationToken cancellationToken)
+        public Task<Result<Page<ITypeEntity<TKey>>>> Handle(TypeSearchQuery<TKey> request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
