@@ -1,5 +1,5 @@
 ﻿using YuckQi.Application.Core.Abstract;
-using YuckQi.Domain.Entities.Types;
+using YuckQi.Domain.Entities.Types.Abstract;
 
 namespace YuckQi.Application.Core
 {
@@ -11,6 +11,7 @@ namespace YuckQi.Application.Core
         public string Name { get; set; }
 
         #endregion
+
 
         #region Constructors
 

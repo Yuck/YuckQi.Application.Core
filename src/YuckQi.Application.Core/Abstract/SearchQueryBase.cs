@@ -1,14 +1,26 @@
 ﻿using MediatR;
-using YuckQi.Domain.Application.Queries.Results;
 using YuckQi.Domain.Entities.Abstract;
 using YuckQi.Domain.Validation;
+using YuckQi.Domain.ValueObjects;
 
 namespace YuckQi.Application.Core.Abstract
 {
-    public abstract class SearchQueryBase<TEntity, TKey> : Page, IRequest<Result<Page<TEntity>>> where TEntity : class, IEntity<TKey> where TKey : struct
+    public abstract class SearchQueryBase<TEntity, TKey> : IRequest<Result<Page<TEntity>>> where TEntity : class, IEntity<TKey> where TKey : struct
     {
-        protected SearchQueryBase(int number, int size) : base(number, size)
+        #region Properties
+
+        protected Page PageCriteria { get; }
+
+        #endregion
+
+
+        #region Constructors
+
+        protected SearchQueryBase(int page, int size)
         {
+            PageCriteria = new Page(page, size);
         }
+
+        #endregion
     }
 }

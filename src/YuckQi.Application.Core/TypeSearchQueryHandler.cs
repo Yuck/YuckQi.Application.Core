@@ -3,15 +3,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mapster;
 using MediatR;
-using YuckQi.Domain.Application.Queries.Results;
-using YuckQi.Domain.Entities.Types;
+using YuckQi.Domain.Entities.Types.Abstract;
 using YuckQi.Domain.Services.Abstract;
 using YuckQi.Domain.Services.Models;
 using YuckQi.Domain.Validation;
+using YuckQi.Domain.ValueObjects;
 
 namespace YuckQi.Application.Core
 {
-    internal class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TypeEntityBase<TKey>, TKey>, Result<Page<TypeEntityBase<TKey>>>> where TKey : struct
+    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TypeEntityBase<TKey>, TKey>, Result<Page<TypeEntityBase<TKey>>>> where TKey : struct
     {
         #region Private Members
 
