@@ -7,11 +7,11 @@ using YuckQi.Domain.Entities.Types.Abstract;
 using YuckQi.Domain.Services.Abstract;
 using YuckQi.Domain.Services.Models;
 using YuckQi.Domain.Validation;
-using YuckQi.Domain.ValueObjects;
+using YuckQi.Domain.ValueObjects.Abstract;
 
 namespace YuckQi.Application.Core
 {
-    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TKey>, Result<Page<ITypeEntity<TKey>>>> where TKey : struct
+    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TKey>, Result<IPage<ITypeEntity<TKey>>>> where TKey : struct
     {
         #region Private Members
 
@@ -32,7 +32,7 @@ namespace YuckQi.Application.Core
 
         #region Public Methods
 
-        public Task<Result<Page<ITypeEntity<TKey>>>> Handle(TypeSearchQuery<TKey> request, CancellationToken cancellationToken)
+        public Task<Result<IPage<ITypeEntity<TKey>>>> Handle(TypeSearchQuery<TKey> request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
