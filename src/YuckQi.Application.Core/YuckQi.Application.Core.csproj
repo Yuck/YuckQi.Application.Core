@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.0.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="YuckQi.Domain.Services" Version="0.4.1" />
+    <PackageReference Include="YuckQi.Domain.Services" Version="0.4.2" />
   </ItemGroup>
 
   <ItemGroup>
