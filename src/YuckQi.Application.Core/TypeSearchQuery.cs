@@ -1,5 +1,4 @@
-﻿using System;
-using YuckQi.Application.Core.Abstract;
+﻿using YuckQi.Application.Core.Abstract;
 using YuckQi.Domain.Entities.Types.Abstract;
 
 namespace YuckQi.Application.Core
@@ -8,7 +7,6 @@ namespace YuckQi.Application.Core
     {
         #region Properties
 
-        public Guid? Identifier { get; }
         public string Name { get; }
 
         #endregion
@@ -16,9 +14,8 @@ namespace YuckQi.Application.Core
 
         #region Constructors
 
-        public TypeSearchQuery(Guid? identifier, string name, int number, int size) : base(number, size)
+        public TypeSearchQuery(string name, int number, int size) : base(number, size)
         {
-            Identifier = identifier;
             Name = name;
         }
 
