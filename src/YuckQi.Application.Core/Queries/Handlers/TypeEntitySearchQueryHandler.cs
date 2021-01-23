@@ -3,26 +3,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mapster;
 using MediatR;
-using YuckQi.Domain.Entities.Types.Abstract;
+using YuckQi.Domain.Aspects.Abstract;
+using YuckQi.Domain.Entities.Abstract;
 using YuckQi.Domain.Services.Abstract;
 using YuckQi.Domain.Services.Models;
 using YuckQi.Domain.Validation;
 using YuckQi.Domain.ValueObjects.Abstract;
 
-namespace YuckQi.Application.Core
+namespace YuckQi.Application.Core.Queries.Handlers
 {
-    public class TypeSearchQueryHandler<TKey> : IRequestHandler<TypeSearchQuery<TKey>, Result<IPage<ITypeEntity<TKey>>>> where TKey : struct
+    public class TypeEntitySearchQueryHandler<TTypeEntity, TKey> : IRequestHandler<TypeEntitySearchQuery<TTypeEntity, TKey>, Result<IPage<TTypeEntity>>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
         #region Private Members
 
-        private readonly ITypeEntityService<ITypeEntity<TKey>, TKey> _types;
+        private readonly ITypeEntityService<TTypeEntity, TKey> _types;
 
         #endregion
 
 
         #region Constructors
 
-        public TypeSearchQueryHandler(ITypeEntityService<ITypeEntity<TKey>, TKey> types)
+        public TypeEntitySearchQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
         }
@@ -32,7 +33,7 @@ namespace YuckQi.Application.Core
 
         #region Public Methods
 
-        public Task<Result<IPage<ITypeEntity<TKey>>>> Handle(TypeSearchQuery<TKey> request, CancellationToken cancellationToken)
+        public Task<Result<IPage<TTypeEntity>>> Handle(TypeEntitySearchQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));

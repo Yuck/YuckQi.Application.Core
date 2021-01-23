@@ -1,12 +1,11 @@
 ﻿using MediatR;
-using YuckQi.Domain.Entities.Abstract;
 using YuckQi.Domain.Validation;
 using YuckQi.Domain.ValueObjects;
 using YuckQi.Domain.ValueObjects.Abstract;
 
 namespace YuckQi.Application.Core.Abstract
 {
-    public abstract class SearchQueryBase<TEntity, TKey> : IRequest<Result<IPage<TEntity>>> where TEntity : class, IEntity<TKey> where TKey : struct
+    public abstract class SearchQueryBase<T> : IRequest<Result<IPage<T>>>
     {
         #region Properties
 
