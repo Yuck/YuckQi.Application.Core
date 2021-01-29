@@ -12,7 +12,7 @@ using YuckQi.Domain.ValueObjects.Abstract;
 
 namespace YuckQi.Application.Core.Queries.Handlers
 {
-    public class TypeEntitySearchQueryHandler<TTypeEntity, TKey> : IRequestHandler<TypeEntitySearchQuery<TTypeEntity, TKey>, Result<IPage<TTypeEntity>>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+    public class SearchTypeEntityQueryHandler<TTypeEntity, TKey> : IRequestHandler<SearchTypeEntityQuery<TTypeEntity, TKey>, Result<IPage<TTypeEntity>>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
         #region Private Members
 
@@ -23,7 +23,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
 
         #region Constructors
 
-        public TypeEntitySearchQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
+        public SearchTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
         }
@@ -33,7 +33,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
 
         #region Public Methods
 
-        public Task<Result<IPage<TTypeEntity>>> Handle(TypeEntitySearchQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
+        public Task<Result<IPage<TTypeEntity>>> Handle(SearchTypeEntityQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));

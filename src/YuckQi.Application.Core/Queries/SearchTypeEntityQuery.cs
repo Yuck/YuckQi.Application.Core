@@ -5,7 +5,7 @@ using YuckQi.Domain.Entities.Abstract;
 
 namespace YuckQi.Application.Core.Queries
 {
-    public class TypeEntitySearchQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEntity> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+    public class SearchTypeEntityQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEntity> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
         #region Properties
 
@@ -18,7 +18,7 @@ namespace YuckQi.Application.Core.Queries
 
         #region Constructors
 
-        public TypeEntitySearchQuery(Guid? identifier, string name, string shortName, int number, int size) : base(number, size)
+        public SearchTypeEntityQuery(Guid? identifier, string name, string shortName, int number, int size) : base(number, size)
         {
             Identifier = identifier;
             Name = name;
