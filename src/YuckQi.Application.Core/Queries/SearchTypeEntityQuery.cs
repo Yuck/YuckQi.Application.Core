@@ -1,11 +1,12 @@
 ﻿using System;
 using YuckQi.Application.Core.Abstract;
+using YuckQi.Application.Core.Queries.Abstract;
 using YuckQi.Domain.Aspects.Abstract;
 using YuckQi.Domain.Entities.Abstract;
 
 namespace YuckQi.Application.Core.Queries
 {
-    public class SearchTypeEntityQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEntity> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+    public class SearchTypeEntityQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEntity>, ITypeRequest where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
         #region Properties
 

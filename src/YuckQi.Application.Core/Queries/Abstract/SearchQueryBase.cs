@@ -3,7 +3,7 @@ using YuckQi.Domain.Validation;
 using YuckQi.Domain.ValueObjects;
 using YuckQi.Domain.ValueObjects.Abstract;
 
-namespace YuckQi.Application.Core.Abstract
+namespace YuckQi.Application.Core.Queries.Abstract
 {
     public abstract class SearchQueryBase<T> : IRequest<Result<IPage<T>>>
     {
