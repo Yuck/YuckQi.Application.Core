@@ -20,6 +20,8 @@ namespace YuckQi.Application.Core.Queries.Handlers
 
         public Task<Result<TTypeEntity>> Handle(GetTypeEntityQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
             if (request.Identifier == null)
                 throw new ArgumentNullException(nameof(request.Identifier));
 

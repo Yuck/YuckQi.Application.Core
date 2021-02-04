@@ -21,6 +21,9 @@ namespace YuckQi.Application.Core.Commands.Handlers
 
         public Task<Result<TTypeEntity>> Handle(CreateTypeEntityCommand<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
             var entity = request.Adapt<TTypeEntity>();
             var result = _components.CreateAsync(entity);
 

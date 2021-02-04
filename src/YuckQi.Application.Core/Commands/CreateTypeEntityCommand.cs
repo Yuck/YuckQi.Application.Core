@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 using YuckQi.Domain.Aspects.Abstract;
 using YuckQi.Domain.Entities.Abstract;
 using YuckQi.Domain.Validation;
@@ -9,6 +10,7 @@ namespace YuckQi.Application.Core.Commands
     {
         #region Properties
 
+        public Guid? Identifier { get; }
         public string Name { get; }
         public string ShortName { get; }
 
@@ -17,8 +19,9 @@ namespace YuckQi.Application.Core.Commands
 
         #region Constructors
 
-        public CreateTypeEntityCommand(string name, string shortName)
+        public CreateTypeEntityCommand(Guid? identifier, string name, string shortName)
         {
+            Identifier = identifier;
             Name = name;
             ShortName = shortName;
         }
