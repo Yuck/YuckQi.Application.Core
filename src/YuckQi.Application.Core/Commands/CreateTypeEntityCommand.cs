@@ -12,15 +12,15 @@ namespace YuckQi.Application.Core.Commands
         #region Properties
 
         public Guid? Identifier { get; }
-        public string Name { get; }
-        public string ShortName { get; }
+        public String Name { get; }
+        public String ShortName { get; }
 
         #endregion
 
 
         #region Constructors
 
-        public CreateTypeEntityCommand(Guid? identifier, string name, string shortName)
+        public CreateTypeEntityCommand(Guid? identifier, String name, String shortName)
         {
             Identifier = identifier;
             Name = name;

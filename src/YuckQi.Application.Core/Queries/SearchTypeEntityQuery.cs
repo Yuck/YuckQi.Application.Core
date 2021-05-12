@@ -11,15 +11,15 @@ namespace YuckQi.Application.Core.Queries
         #region Properties
 
         public Guid? Identifier { get; }
-        public string Name { get; }
-        public string ShortName { get; }
+        public String Name { get; }
+        public String ShortName { get; }
 
         #endregion
 
 
         #region Constructors
 
-        public SearchTypeEntityQuery(Guid? identifier, string name, string shortName, int number, int size) : base(number, size)
+        public SearchTypeEntityQuery(Guid? identifier, String name, String shortName, Int32 number, Int32 size) : base(number, size)
         {
             Identifier = identifier;
             Name = name;

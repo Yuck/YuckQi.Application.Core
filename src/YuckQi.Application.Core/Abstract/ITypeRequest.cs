@@ -5,7 +5,7 @@ namespace YuckQi.Application.Core.Abstract
     public interface ITypeRequest
     {
         Guid? Identifier { get; }
-        string Name { get; }
-        string ShortName { get; }
+        String Name { get; }
+        String ShortName { get; }
     }
 }
