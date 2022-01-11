@@ -11,12 +11,24 @@ namespace YuckQi.Application.Core.Queries.Handlers
 {
     public class GetTypeEntityQueryHandler<TTypeEntity, TKey> : IRequestHandler<GetTypeEntityQuery<TTypeEntity, TKey>, Result<TTypeEntity>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
+        #region Private Members
+
         private readonly ITypeEntityService<TTypeEntity, TKey> _components;
+
+        #endregion
+
+
+        #region Constructors
 
         public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> components)
         {
             _components = components ?? throw new ArgumentNullException(nameof(components));
         }
+
+        #endregion
+
+
+        #region Public Methods
 
         public Task<Result<TTypeEntity>> Handle(GetTypeEntityQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
@@ -27,5 +39,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
 
             return _components.GetAsync(request.Identifier.Value);
         }
+
+        #endregion
     }
 }

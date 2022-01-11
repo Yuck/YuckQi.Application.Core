@@ -12,12 +12,24 @@ namespace YuckQi.Application.Core.Commands.Handlers
 {
     public class CreateTypeEntityCommandHandler<TTypeEntity, TKey> : IRequestHandler<CreateTypeEntityCommand<TTypeEntity, TKey>, Result<TTypeEntity>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
     {
+        #region Private Members
+
         private readonly ITypeEntityService<TTypeEntity, TKey> _components;
+
+        #endregion
+
+
+        #region Constructors
 
         public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TKey> components)
         {
             _components = components ?? throw new ArgumentNullException(nameof(components));
         }
+
+        #endregion
+
+
+        #region Public Methods
 
         public Task<Result<TTypeEntity>> Handle(CreateTypeEntityCommand<TTypeEntity, TKey> request, CancellationToken cancellationToken)
         {
@@ -29,5 +41,7 @@ namespace YuckQi.Application.Core.Commands.Handlers
 
             return result;
         }
+
+        #endregion
     }
 }
