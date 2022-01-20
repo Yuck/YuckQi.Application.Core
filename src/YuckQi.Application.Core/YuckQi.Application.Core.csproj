@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Kevin J Lambert</Authors>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>A .NET library for bootstrapping a domain application project.</Description>
   </PropertyGroup>
@@ -13,7 +13,7 @@
     <PackageReference Include="Mapster" Version="7.2.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-    <PackageReference Include="YuckQi.Domain.Services" Version="0.6.0" />
+    <PackageReference Include="YuckQi.Domain.Services" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
