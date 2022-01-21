@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Mapster;
 using MediatR;
 using YuckQi.Domain.Aspects.Abstract;
 using YuckQi.Domain.Entities.Abstract;
@@ -9,6 +8,7 @@ using YuckQi.Domain.Services.Abstract;
 using YuckQi.Domain.Services.Models;
 using YuckQi.Domain.Validation;
 using YuckQi.Domain.ValueObjects.Abstract;
+using YuckQi.Extensions.Mapping.Abstractions;
 
 namespace YuckQi.Application.Core.Queries.Handlers
 {
@@ -16,6 +16,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
     {
         #region Private Members
 
+        private readonly IMapper _mapper;
         private readonly ITypeEntityService<TTypeEntity, TKey> _types;
 
         #endregion
@@ -23,9 +24,10 @@ namespace YuckQi.Application.Core.Queries.Handlers
 
         #region Constructors
 
-        public SearchTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
+        public SearchTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> types, IMapper mapper)
         {
             _types = types ?? throw new ArgumentNullException(nameof(types));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         #endregion
@@ -38,7 +40,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            return _types.SearchAsync(request.Adapt<TypeSearchCriteria>());
+            return _types.SearchAsync(_mapper.Map<TypeSearchCriteria>(request));
         }
 
         #endregion
