@@ -29,7 +29,7 @@ namespace YuckQi.Application.Core.Behaviors
         public ValidationBehavior(IEnumerable<AbstractValidator<TRequest>> validators, ILogger<ValidationBehavior<TRequest, TResponse>> logger, String failedValidationMessageId)
         {
             _validators = validators ?? Array.Empty<AbstractValidator<TRequest>>();
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = logger;
             _failedValidationMessageId = failedValidationMessageId;
         }
 
@@ -43,18 +43,25 @@ namespace YuckQi.Application.Core.Behaviors
             var stopwatch = Stopwatch.StartNew();
             var requestType = typeof(TRequest).Name;
 
-            _logger.LogInformation("Validation of '{requestType}' started.", requestType);
+            _logger?.LogInformation("Validation of '{requestType}' started.", requestType);
 
-            var results = _validators.Select(validator => validator.GetResult(request, _failedValidationMessageId)).ToList();
-            var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
-            if (invalid.Detail.Any(t => t.Type == ResultType.Error))
+            if (_validators.Any())
             {
-                _logger.LogInformation("Validation of '{requestType}' failed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
+                var results = _validators.Select(validator => validator.GetResult(request, _failedValidationMessageId)).ToList();
+                var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
+                if (invalid.Detail.Any(t => t.Type == ResultType.Error))
+                {
+                    _logger?.LogInformation("Validation of '{requestType}' failed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
 
-                throw new DomainValidationException(invalid);
+                    throw new DomainValidationException(invalid);
+                }
+            }
+            else
+            {
+                _logger?.LogInformation("Validation of '{requestType}' does not have any validators configured.", requestType);
             }
 
-            _logger.LogInformation("Validation of '{requestType}' completed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
+            _logger?.LogInformation("Validation of '{requestType}' completed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
 
             return next();
         }
