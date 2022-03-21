@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace YuckQi.Application.Core.Behaviors
 {
-    public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         #region Private Members
 

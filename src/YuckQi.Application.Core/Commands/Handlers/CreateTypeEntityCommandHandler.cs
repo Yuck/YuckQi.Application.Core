@@ -14,7 +14,7 @@ namespace YuckQi.Application.Core.Commands.Handlers
     {
         #region Private Members
 
-        private readonly ITypeEntityService<TTypeEntity, TKey> _components;
+        private readonly ITypeEntityService<TTypeEntity, TKey> _types;
         private readonly IMapper _mapper;
 
         #endregion
@@ -22,9 +22,9 @@ namespace YuckQi.Application.Core.Commands.Handlers
 
         #region Constructors
 
-        public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TKey> components, IMapper mapper)
+        public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TKey> types, IMapper mapper)
         {
-            _components = components ?? throw new ArgumentNullException(nameof(components));
+            _types = types ?? throw new ArgumentNullException(nameof(types));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -39,7 +39,7 @@ namespace YuckQi.Application.Core.Commands.Handlers
                 throw new ArgumentNullException(nameof(request));
 
             var entity = _mapper.Map<TTypeEntity>(request);
-            var result = _components.CreateAsync(entity);
+            var result = _types.CreateAsync(entity);
 
             return result;
         }

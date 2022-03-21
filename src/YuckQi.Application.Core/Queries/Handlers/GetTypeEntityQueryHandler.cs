@@ -13,16 +13,16 @@ namespace YuckQi.Application.Core.Queries.Handlers
     {
         #region Private Members
 
-        private readonly ITypeEntityService<TTypeEntity, TKey> _components;
+        private readonly ITypeEntityService<TTypeEntity, TKey> _types;
 
         #endregion
 
 
         #region Constructors
 
-        public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> components)
+        public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
         {
-            _components = components ?? throw new ArgumentNullException(nameof(components));
+            _types = types ?? throw new ArgumentNullException(nameof(types));
         }
 
         #endregion
@@ -37,7 +37,7 @@ namespace YuckQi.Application.Core.Queries.Handlers
             if (request.Identifier == null)
                 throw new ArgumentNullException(nameof(request.Identifier));
 
-            return _components.GetAsync(request.Identifier.Value);
+            return _types.GetAsync(request.Identifier.Value);
         }
 
         #endregion
