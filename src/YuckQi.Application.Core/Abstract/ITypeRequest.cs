@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace YuckQi.Application.Core.Abstract
+namespace YuckQi.Application.Core.Abstract;
+
+public interface ITypeRequest
 {
-    public interface ITypeRequest
-    {
-        Guid? Identifier { get; }
-        String Name { get; }
-        String ShortName { get; }
-    }
+    Guid? Identifier { get; }
+    String Name { get; }
+    String ShortName { get; }
 }
