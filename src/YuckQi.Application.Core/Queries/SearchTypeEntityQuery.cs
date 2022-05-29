@@ -6,11 +6,11 @@ using YuckQi.Domain.Entities.Abstract;
 
 namespace YuckQi.Application.Core.Queries;
 
-public class SearchTypeEntityQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEntity>, ITypeRequest where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+public class SearchTypeEntityQuery<TTypeEntity, TIdentifier> : SearchQueryBase<TTypeEntity>, ITypeRequest<TIdentifier> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
 {
     #region Properties
 
-    public Guid? Identifier { get; }
+    public TIdentifier Identifier { get; }
     public String Name { get; }
     public String ShortName { get; }
 
@@ -19,7 +19,7 @@ public class SearchTypeEntityQuery<TTypeEntity, TKey> : SearchQueryBase<TTypeEnt
 
     #region Constructors
 
-    public SearchTypeEntityQuery(Guid? identifier, String name, String shortName, Int32 number, Int32 size) : base(number, size)
+    public SearchTypeEntityQuery(TIdentifier identifier, String name, String shortName, Int32 number, Int32 size) : base(number, size)
     {
         Identifier = identifier;
         Name = name;

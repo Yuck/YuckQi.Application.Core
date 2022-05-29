@@ -10,11 +10,11 @@ using YuckQi.Extensions.Mapping.Abstractions;
 
 namespace YuckQi.Application.Core.Commands.Handlers;
 
-public class CreateTypeEntityCommandHandler<TTypeEntity, TKey> : IRequestHandler<CreateTypeEntityCommand<TTypeEntity, TKey>, Result<TTypeEntity>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+public class CreateTypeEntityCommandHandler<TTypeEntity, TIdentifier> : IRequestHandler<CreateTypeEntityCommand<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
 {
     #region Private Members
 
-    private readonly ITypeEntityService<TTypeEntity, TKey> _types;
+    private readonly ITypeEntityService<TTypeEntity, TIdentifier> _types;
     private readonly IMapper _mapper;
 
     #endregion
@@ -22,7 +22,7 @@ public class CreateTypeEntityCommandHandler<TTypeEntity, TKey> : IRequestHandler
 
     #region Constructors
 
-    public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TKey> types, IMapper mapper)
+    public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TIdentifier> types, IMapper mapper)
     {
         _types = types ?? throw new ArgumentNullException(nameof(types));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -33,7 +33,7 @@ public class CreateTypeEntityCommandHandler<TTypeEntity, TKey> : IRequestHandler
 
     #region Public Methods
 
-    public Task<Result<TTypeEntity>> Handle(CreateTypeEntityCommand<TTypeEntity, TKey> request, CancellationToken cancellationToken)
+    public Task<Result<TTypeEntity>> Handle(CreateTypeEntityCommand<TTypeEntity, TIdentifier> request, CancellationToken cancellationToken)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));

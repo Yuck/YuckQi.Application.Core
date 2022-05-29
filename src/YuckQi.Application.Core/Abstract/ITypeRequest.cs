@@ -2,9 +2,9 @@
 
 namespace YuckQi.Application.Core.Abstract;
 
-public interface ITypeRequest
+public interface ITypeRequest<out TIdentifier>
 {
-    Guid? Identifier { get; }
+    TIdentifier Identifier { get; }
     String Name { get; }
     String ShortName { get; }
 }

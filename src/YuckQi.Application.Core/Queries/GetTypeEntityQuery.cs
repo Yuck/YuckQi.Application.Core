@@ -1,23 +1,22 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 using YuckQi.Domain.Aspects.Abstract;
 using YuckQi.Domain.Entities.Abstract;
 using YuckQi.Domain.Validation;
 
 namespace YuckQi.Application.Core.Queries;
 
-public class GetTypeEntityQuery<TTypeEntity, TKey> : IRequest<Result<TTypeEntity>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+public class GetTypeEntityQuery<TTypeEntity, TIdentifier> : IRequest<Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
 {
     #region Properties
 
-    public Guid? Identifier { get; }
+    public TIdentifier Identifier { get; }
 
     #endregion
 
 
     #region Constructors
 
-    public GetTypeEntityQuery(Guid? identifier)
+    public GetTypeEntityQuery(TIdentifier identifier)
     {
         Identifier = identifier;
     }

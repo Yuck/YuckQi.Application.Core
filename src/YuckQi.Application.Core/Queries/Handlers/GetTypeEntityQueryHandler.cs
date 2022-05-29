@@ -9,18 +9,18 @@ using YuckQi.Domain.Validation;
 
 namespace YuckQi.Application.Core.Queries.Handlers;
 
-public class GetTypeEntityQueryHandler<TTypeEntity, TKey> : IRequestHandler<GetTypeEntityQuery<TTypeEntity, TKey>, Result<TTypeEntity>> where TTypeEntity : IEntity<TKey>, IType where TKey : struct
+public class GetTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandler<GetTypeEntityQuery<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
 {
     #region Private Members
 
-    private readonly ITypeEntityService<TTypeEntity, TKey> _types;
+    private readonly ITypeEntityService<TTypeEntity, TIdentifier> _types;
 
     #endregion
 
 
     #region Constructors
 
-    public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TKey> types)
+    public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TIdentifier> types)
     {
         _types = types ?? throw new ArgumentNullException(nameof(types));
     }
@@ -30,14 +30,12 @@ public class GetTypeEntityQueryHandler<TTypeEntity, TKey> : IRequestHandler<GetT
 
     #region Public Methods
 
-    public Task<Result<TTypeEntity>> Handle(GetTypeEntityQuery<TTypeEntity, TKey> request, CancellationToken cancellationToken)
+    public Task<Result<TTypeEntity>> Handle(GetTypeEntityQuery<TTypeEntity, TIdentifier> request, CancellationToken cancellationToken)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
-        if (request.Identifier == null)
-            throw new ArgumentNullException(nameof(request.Identifier));
 
-        return _types.GetAsync(request.Identifier.Value);
+        return _types.GetAsync(request.Identifier);
     }
 
     #endregion
