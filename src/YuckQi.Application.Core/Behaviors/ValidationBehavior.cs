@@ -38,7 +38,7 @@ namespace YuckQi.Application.Core.Behaviors
 
         #region Public Methods
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var stopwatch = Stopwatch.StartNew();
             var requestType = typeof(TRequest).Name;
@@ -47,7 +47,7 @@ namespace YuckQi.Application.Core.Behaviors
 
             if (_validators.Any())
             {
-                var results = _validators.Select(validator => validator.GetResult(request, _failedValidationMessageId)).ToList();
+                var results = await Task.WhenAll(_validators.Select(validator => validator.GetResultAsync(request, _failedValidationMessageId)));
                 var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
                 if (invalid.Detail.Any(t => t.Type == ResultType.Error))
                 {
@@ -63,7 +63,7 @@ namespace YuckQi.Application.Core.Behaviors
 
             _logger?.LogInformation("Validation of '{requestType}' completed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
 
-            return next();
+            return await next();
         }
 
         #endregion
