@@ -39,7 +39,7 @@ public class CreateTypeEntityCommandHandler<TTypeEntity, TIdentifier> : IRequest
             throw new ArgumentNullException(nameof(request));
 
         var entity = _mapper.Map<TTypeEntity>(request);
-        var result = _types.CreateAsync(entity);
+        var result = _types.Create(entity, cancellationToken);
 
         return result;
     }

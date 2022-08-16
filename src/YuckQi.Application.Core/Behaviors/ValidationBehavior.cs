@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using YuckQi.Application.Core.Abstract;
 using YuckQi.Domain.Validation;
-using YuckQi.Domain.Validation.Exceptions;
 using YuckQi.Domain.Validation.Extensions;
 
 namespace YuckQi.Application.Core.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse> where TResponse : IValidated, new()
 {
     #region Private Members
 
@@ -47,13 +47,13 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (_validators.Any())
         {
-            var results = await Task.WhenAll(_validators.Select(validator => validator.GetResultAsync(request, _failedValidationMessageId)));
+            var results = await Task.WhenAll(_validators.Select(validator => validator.GetResult(request, _failedValidationMessageId, cancellationToken)));
             var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
             if (invalid.Detail.Any(t => t.Type == ResultType.Error))
             {
                 _logger?.LogInformation("Validation of '{requestType}' failed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
 
-                throw new DomainValidationException(invalid);
+                return new TResponse { ValidationResults = results };
             }
         }
         else

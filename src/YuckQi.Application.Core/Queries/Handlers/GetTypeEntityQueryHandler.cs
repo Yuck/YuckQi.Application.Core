@@ -35,7 +35,7 @@ public class GetTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandl
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        return _types.GetAsync(request.Identifier);
+        return _types.Get(request.Identifier, cancellationToken);
     }
 
     #endregion

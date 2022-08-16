@@ -40,7 +40,7 @@ public class SearchTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHa
         if (request == null)
             throw new ArgumentNullException(nameof(request));
 
-        return _types.SearchAsync(_mapper.Map<TypeSearchCriteria>(request));
+        return _types.Search(_mapper.Map<TypeSearchCriteria>(request), cancellationToken);
     }
 
     #endregion
