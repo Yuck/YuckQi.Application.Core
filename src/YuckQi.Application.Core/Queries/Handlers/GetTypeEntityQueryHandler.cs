@@ -9,26 +9,14 @@ using YuckQi.Domain.Validation;
 
 namespace YuckQi.Application.Core.Queries.Handlers;
 
-public class GetTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandler<GetTypeEntityQuery<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
+public class GetTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandler<GetTypeEntityQuery<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : IEquatable<TIdentifier>
 {
-    #region Private Members
-
     private readonly ITypeEntityService<TTypeEntity, TIdentifier> _types;
-
-    #endregion
-
-
-    #region Constructors
 
     public GetTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TIdentifier> types)
     {
         _types = types ?? throw new ArgumentNullException(nameof(types));
     }
-
-    #endregion
-
-
-    #region Public Methods
 
     public Task<Result<TTypeEntity>> Handle(GetTypeEntityQuery<TTypeEntity, TIdentifier> request, CancellationToken cancellationToken)
     {
@@ -37,6 +25,4 @@ public class GetTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandl
 
         return _types.Get(request.Identifier, cancellationToken);
     }
-
-    #endregion
 }

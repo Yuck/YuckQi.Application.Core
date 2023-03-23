@@ -15,28 +15,14 @@ namespace YuckQi.Application.Core.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse> where TResponse : IValidated, new()
 {
-    #region Private Members
-
-    private readonly String _failedValidationMessageId;
     private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
     private readonly IEnumerable<AbstractValidator<TRequest>> _validators;
 
-    #endregion
-
-
-    #region Constructors
-
-    public ValidationBehavior(IEnumerable<AbstractValidator<TRequest>> validators, ILogger<ValidationBehavior<TRequest, TResponse>> logger, String failedValidationMessageId)
+    public ValidationBehavior(IEnumerable<AbstractValidator<TRequest>> validators, ILogger<ValidationBehavior<TRequest, TResponse>> logger)
     {
         _validators = validators ?? Array.Empty<AbstractValidator<TRequest>>();
         _logger = logger;
-        _failedValidationMessageId = failedValidationMessageId;
     }
-
-    #endregion
-
-
-    #region Public Methods
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -47,7 +33,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (_validators.Any())
         {
-            var results = await Task.WhenAll(_validators.Select(validator => validator.GetResult(request, _failedValidationMessageId, cancellationToken)));
+            var results = await Task.WhenAll(_validators.Select(validator => validator.GetResult(request, cancellationToken)));
             var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
             if (invalid.Detail.Any(t => t.Type == ResultType.Error))
             {
@@ -65,6 +51,4 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         return await next();
     }
-
-    #endregion
 }

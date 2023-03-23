@@ -10,28 +10,16 @@ using YuckQi.Extensions.Mapping.Abstractions;
 
 namespace YuckQi.Application.Core.Commands.Handlers;
 
-public class CreateTypeEntityCommandHandler<TTypeEntity, TIdentifier> : IRequestHandler<CreateTypeEntityCommand<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
+public class CreateTypeEntityCommandHandler<TTypeEntity, TIdentifier> : IRequestHandler<CreateTypeEntityCommand<TTypeEntity, TIdentifier>, Result<TTypeEntity>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : IEquatable<TIdentifier>
 {
-    #region Private Members
-
     private readonly ITypeEntityService<TTypeEntity, TIdentifier> _types;
     private readonly IMapper _mapper;
-
-    #endregion
-
-
-    #region Constructors
 
     public CreateTypeEntityCommandHandler(ITypeEntityService<TTypeEntity, TIdentifier> types, IMapper mapper)
     {
         _types = types ?? throw new ArgumentNullException(nameof(types));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
-
-    #endregion
-
-
-    #region Public Methods
 
     public Task<Result<TTypeEntity>> Handle(CreateTypeEntityCommand<TTypeEntity, TIdentifier> request, CancellationToken cancellationToken)
     {
@@ -43,6 +31,4 @@ public class CreateTypeEntityCommandHandler<TTypeEntity, TIdentifier> : IRequest
 
         return result;
     }
-
-    #endregion
 }

@@ -12,28 +12,16 @@ using YuckQi.Extensions.Mapping.Abstractions;
 
 namespace YuckQi.Application.Core.Queries.Handlers;
 
-public class SearchTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandler<SearchTypeEntityQuery<TTypeEntity, TIdentifier>, Result<IPage<TTypeEntity>>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : struct
+public class SearchTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHandler<SearchTypeEntityQuery<TTypeEntity, TIdentifier>, Result<IPage<TTypeEntity>>> where TTypeEntity : IEntity<TIdentifier>, IType where TIdentifier : IEquatable<TIdentifier>
 {
-    #region Private Members
-
     private readonly IMapper _mapper;
     private readonly ITypeEntityService<TTypeEntity, TIdentifier> _types;
-
-    #endregion
-
-
-    #region Constructors
 
     public SearchTypeEntityQueryHandler(ITypeEntityService<TTypeEntity, TIdentifier> types, IMapper mapper)
     {
         _types = types ?? throw new ArgumentNullException(nameof(types));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
-
-    #endregion
-
-
-    #region Public Methods
 
     public Task<Result<IPage<TTypeEntity>>> Handle(SearchTypeEntityQuery<TTypeEntity, TIdentifier> request, CancellationToken cancellationToken)
     {
@@ -42,6 +30,4 @@ public class SearchTypeEntityQueryHandler<TTypeEntity, TIdentifier> : IRequestHa
 
         return _types.Search(_mapper.Map<TypeSearchCriteria>(request), cancellationToken);
     }
-
-    #endregion
 }

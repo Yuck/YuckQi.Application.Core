@@ -4,15 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Kevin J Lambert</Authors>
-    <Version>6.1.0</Version>
+    <Version>6.2.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>A .NET library for bootstrapping a domain application project.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="11.1.0" />
+    <PackageReference Include="FluentValidation" Version="11.5.1" />
+    <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-    <PackageReference Include="YuckQi.Domain.Services" Version="6.1.0" />
+    <PackageReference Include="YuckQi.Domain.Services" Version="6.2.0" />
     <PackageReference Include="YuckQi.Extensions.Mapping.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
