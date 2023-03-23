@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,65 +7,48 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using YuckQi.Application.Core.Abstract;
 using YuckQi.Domain.Validation;
-using YuckQi.Domain.Validation.Exceptions;
 using YuckQi.Domain.Validation.Extensions;
 
-namespace YuckQi.Application.Core.Behaviors
+namespace YuckQi.Application.Core.Behaviors;
+
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse> where TResponse : IValidated, new()
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+    private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
+    private readonly IEnumerable<AbstractValidator<TRequest>> _validators;
+
+    public ValidationBehavior(IEnumerable<AbstractValidator<TRequest>> validators, ILogger<ValidationBehavior<TRequest, TResponse>> logger)
     {
-        #region Private Members
+        _validators = validators ?? Array.Empty<AbstractValidator<TRequest>>();
+        _logger = logger;
+    }
 
-        private readonly String _failedValidationMessageId;
-        private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
-        private readonly IEnumerable<AbstractValidator<TRequest>> _validators;
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        var requestType = typeof(TRequest).Name;
 
-        #endregion
+        _logger?.LogInformation("Validation of '{requestType}' started.", requestType);
 
-
-        #region Constructors
-
-        public ValidationBehavior(IEnumerable<AbstractValidator<TRequest>> validators, ILogger<ValidationBehavior<TRequest, TResponse>> logger, String failedValidationMessageId)
+        if (_validators.Any())
         {
-            _validators = validators ?? Array.Empty<AbstractValidator<TRequest>>();
-            _logger = logger;
-            _failedValidationMessageId = failedValidationMessageId;
+            var results = await Task.WhenAll(_validators.Select(validator => validator.GetResult(request, cancellationToken)));
+            var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
+            if (invalid.Detail.Any(t => t.Type == ResultType.Error))
+            {
+                _logger?.LogInformation("Validation of '{requestType}' failed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
+
+                return new TResponse { ValidationResults = results };
+            }
+        }
+        else
+        {
+            _logger?.LogInformation("Validation of '{requestType}' does not have any validators configured.", requestType);
         }
 
-        #endregion
+        _logger?.LogInformation("Validation of '{requestType}' completed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
 
-
-        #region Public Methods
-
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
-        {
-            var stopwatch = Stopwatch.StartNew();
-            var requestType = typeof(TRequest).Name;
-
-            _logger?.LogInformation("Validation of '{requestType}' started.", requestType);
-
-            if (_validators.Any())
-            {
-                var results = await Task.WhenAll(_validators.Select(validator => validator.GetResultAsync(request, _failedValidationMessageId)));
-                var invalid = new Result(results.Where(t => ! t.IsValid).SelectMany(t => t.Detail).ToList());
-                if (invalid.Detail.Any(t => t.Type == ResultType.Error))
-                {
-                    _logger?.LogInformation("Validation of '{requestType}' failed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
-
-                    throw new DomainValidationException(invalid);
-                }
-            }
-            else
-            {
-                _logger?.LogInformation("Validation of '{requestType}' does not have any validators configured.", requestType);
-            }
-
-            _logger?.LogInformation("Validation of '{requestType}' completed ({validationElapsed:g} elapsed).", requestType, stopwatch.Elapsed);
-
-            return await next();
-        }
-
-        #endregion
+        return await next();
     }
 }
